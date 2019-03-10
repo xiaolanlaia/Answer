@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<litapal>
+    <dbname value="userDb"/>
+
+    <version value="1"/>
+
+    <list>
+        <mapping class="com.example.answer.db.User"/>
+        <mapping class="com.example.answer.db.Question"/>
+
+    </list>
+</litapal>
