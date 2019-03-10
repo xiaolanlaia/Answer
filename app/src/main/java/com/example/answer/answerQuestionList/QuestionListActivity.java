@@ -37,7 +37,7 @@ import okhttp3.Response;
 
 
 
-public class QuestionListActivity extends AppCompatActivity implements View.OnClickListener{
+public class QuestionListActivity extends AppCompatActivity {
 
     private ListView listView;
     private QuestionListAdapter questionListAdapter;
@@ -48,8 +48,8 @@ public class QuestionListActivity extends AppCompatActivity implements View.OnCl
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question_list);
-        Button textButton = (Button)findViewById(R.id.text_button);
-        textButton.setOnClickListener(this);
+
+
         listView = (ListView)findViewById(R.id.list_view);
 
         questionListAdapter = new QuestionListAdapter(this,R.layout.question_item,dataList);
@@ -74,18 +74,6 @@ public class QuestionListActivity extends AppCompatActivity implements View.OnCl
 
     }
 
-    @Override
-    public void onClick(View v){
-        switch (v.getId()){
-            case R.id.text_button:{
-                queryQuestion();
-
-                break;
-            }
-            default:
-                break;
-        }
-    }
     public void queryQuestion(){
         List<Question>questionList = DataSupport.findAll(Question.class);
             dataList.clear();

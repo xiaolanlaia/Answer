@@ -32,7 +32,7 @@
         android:layout_marginTop="20dp"
         android:gravity="center"
 
-        android:text="下面哪一个不是Java的三大特性？"
+        tools:text="下面哪一个不是Java的三大特性？"
         android:textSize="24sp"/>
     <TextView
         android:id="@+id/a"
@@ -41,15 +41,15 @@
         android:layout_marginTop="40dp"
         android:layout_marginLeft="20dp"
         android:layout_below="@+id/question_description"
-        android:text="答案A"
-        android:textSize="24sp"/>
+        tools:text="答案A"
+        android:textSize="24sp" />
     <TextView
         android:id="@+id/b"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_below="@+id/a"
         android:layout_marginLeft="20dp"
-        android:text="答案B"
+        tools:text="答案B"
         android:textSize="24sp"/>
     <TextView
         android:id="@+id/c"
@@ -57,7 +57,7 @@
         android:layout_height="40dp"
         android:layout_below="@+id/b"
         android:layout_marginLeft="20dp"
-        android:text="答案C"
+        tools:text="答案C"
         android:textSize="24sp"/>
     <TextView
         android:id="@+id/d"
@@ -65,7 +65,7 @@
         android:layout_height="40dp"
         android:layout_below="@+id/c"
         android:layout_marginLeft="20dp"
-        android:text="答案D"
+        tools:text="答案D"
         android:textSize="24sp"/>
     <Button
         android:id="@+id/re"
@@ -75,7 +75,6 @@
         android:gravity="center"
         android:layout_marginLeft="30dp"
         android:layout_marginTop="20dp"
-
         android:text="上一题"
         android:textSize="24sp"/>
     <Button
