@@ -3,6 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <include layout="@layout/title"
+        android:id="@+id/title"/>
 
     <Button
         android:id="@+id/account"
@@ -12,6 +14,7 @@
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="20dp"
         android:text="账号"
+        android:clickable="false"
         />
     <EditText
         android:id="@+id/account_text"
@@ -27,7 +30,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/account"
         android:layout_marginLeft="20dp"
-        android:text="密码"/>
+        android:text="密码"
+        android:clickable="false"/>
     <EditText
         android:id="@+id/password_text"
         android:layout_width="250dp"

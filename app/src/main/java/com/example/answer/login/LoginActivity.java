@@ -4,18 +4,24 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.answer.BaseActivity;
 import com.example.answer.answerQuestion.MainActivity;
 import com.example.answer.answerQuestionList.QuestionListActivity;
 import com.example.answer.R;
 import com.example.answer.db.User;
+import com.example.answer.util.Utility;
 
 import org.litepal.LitePal;
 import org.litepal.crud.DataSupport;
@@ -27,49 +33,41 @@ import java.util.List;
  * Created by W on 2019/2/12.
  */
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
+public class LoginActivity extends BaseActivity implements View.OnClickListener{
 
-    private TextView accountText;
-    private TextView passwordText;
-
+    private EditText accountText;
+    private EditText passwordText;
     private Button login;
     private Button logon;
-
     private CheckBox checkBox;
     private Boolean checked;
-
-    private String account;
+    public static String account;
     private String password;
-
-    SharedPreferences sharedPreferences;
-
-
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstance){
         super.onCreate(savedInstance);
         setContentView(R.layout.login);
-        firstRun();
-
-        accountText = (TextView)findViewById(R.id.account_text);
-        passwordText = (TextView)findViewById(R.id.password_text);
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        accountText = (EditText)findViewById(R.id.account_text);
+        passwordText = (EditText)findViewById(R.id.password_text);
         login = (Button)findViewById(R.id.login);
         logon = (Button)findViewById(R.id.logon);
         login.setOnClickListener(this);
         logon.setOnClickListener(this);
         checkBox = (CheckBox)findViewById(R.id.check_box);
-
         restoreChecked();
+
     }
     @Override
     protected void onResume(){
         super.onResume();
         checkChecked();
     }
-
     @Override
     public void onClick(View v){
-
         account = accountText.getText().toString();
         password = passwordText.getText().toString();
         switch (v.getId()){
@@ -94,7 +92,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         i++;
                     }
                 }
-
                 break;
             }
             case R.id.login:{
@@ -106,6 +103,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     int i = 1;
                     for (User user : list2){
                         if (user.getAccount().equals(account) && user.getPassword().equals(password)){
+                            sharedPreferences.edit().putString("account",accountText.getText().toString()).apply();
+                            sharedPreferences.edit().putString("password",passwordText.getText().toString()).apply();
                             Intent intent1 = new Intent(LoginActivity.this,QuestionListActivity.class);
                             startActivity(intent1);
                             break;
@@ -122,20 +121,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 break;
         }
     }
-    private void firstRun() {
-        sharedPreferences = getSharedPreferences("FirstRun", 0);
-        Boolean firstRun = sharedPreferences.getBoolean("First", true);
-        if (firstRun) {
-            sharedPreferences.edit().putBoolean("First", false).apply();
-            //创建数据库;
-            LitePal.getDatabase();
-            User user = new User();
-            user.setAccount("admin");
-            user.setPassword("123456");
-            user.save();
-            Toast.makeText(this,"Welcome !",Toast.LENGTH_SHORT).show();
-        }
-    }
 
     private void checkChecked(){
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -143,22 +128,24 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
                 sharedPreferences = getSharedPreferences("checked",0);
-                if (b||compoundButton.isChecked()){
-                    sharedPreferences.edit().putBoolean("check",true).apply();
+                if (checkBox.isChecked()){
+                        sharedPreferences.edit().putString("account",accountText.getText().toString()).apply();
+                        sharedPreferences.edit().putString("password",passwordText.getText().toString()).apply();
+                        sharedPreferences.edit().putBoolean("check",true).apply();
+
                 }else {
                     sharedPreferences.edit().putBoolean("check",false).apply();
                 }
             }
         });
     }
-
     private void restoreChecked(){
         sharedPreferences = getSharedPreferences("checked",0);
         checked = sharedPreferences.getBoolean("check",false);
         if (checked){
             accountText.setText(sharedPreferences.getString("account",""));
             passwordText.setText(sharedPreferences.getString("password",""));
-
+            accountText.setSelection(accountText.getText().length());
             checkBox.setChecked(true);
         }else {
             checkBox.setChecked(false);

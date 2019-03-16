@@ -1,11 +1,11 @@
 package com.example.answer.db;
 
-import org.litepal.crud.DataSupport;
 
-public class Question extends DataSupport {
+public class Question{
 
     private String title;
     private String state;
+
 
     public String getTitle() {
         return title;
