@@ -1,8 +1,8 @@
 package com.example.answer.util;
 
 
-import com.example.answer.db.Answer;
-import com.example.answer.db.Question;
+import com.example.answer.answerQuestion.Answer;
+import com.example.answer.answerQuestionList.Question;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.util.List;

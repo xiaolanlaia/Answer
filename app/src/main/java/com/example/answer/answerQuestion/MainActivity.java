@@ -5,10 +5,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.CountDownTimer;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -18,13 +18,9 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.answer.BaseActivity;
 import com.example.answer.R;
 
 
-import com.example.answer.db.Answer;
-
-import com.example.answer.db.User;
 import com.example.answer.login.LoginActivity;
 import com.example.answer.util.HttpUtil;
 import com.example.answer.util.Utility;
@@ -37,15 +33,16 @@ import okhttp3.Callback;
 import okhttp3.Response;
 
 
-public class MainActivity extends BaseActivity implements View.OnClickListener{
+public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     private String url = "http://192.168.43.120/";
     public TextView questionText,answerA,answerB,answerC,showSelect,showCorrect,counterView;
     private Button preButton,neButton;
     private int i=0;
     private List<Answer> answerList = new ArrayList<>();
-    private SharedPreferences sharedPreferences;
+    public static SharedPreferences sharedPreferences;
     private Intent intent;
+    private boolean isEnd;
 
 
     @Override
@@ -74,11 +71,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     @Override
     protected void onResume(){
         super.onResume();
-
         intent = getIntent();
         String mainActivityAddress = url + intent.getStringExtra("clickTitle") + ".json";
         requestAnswerList(mainActivityAddress);
         sharedPreferences =  getSharedPreferences(LoginActivity.account + intent.getStringExtra("clickTitle"), 0);
+        if (intent.getStringExtra("clickState").equals("已结束")){
+            sharedPreferences.edit().putBoolean("sure",true).apply();
+            isEnd = true;
+
+        }
     }
 
     /**
@@ -151,7 +152,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     /**
      * 倒计时器
      */
-    private CountDownTimer timer = new CountDownTimer(60000, 1000) {
+    private CountDownTimer timer = new CountDownTimer(30000, 1000) {
 
         @Override
         public void onTick(long millisUntilFinished) {
@@ -186,7 +187,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     };
 
     /**
-     * MainActivity发起的网络请求
+     * 发起的网络请求
      */
     public  void requestAnswerList(final String mainActivityAddress){
         HttpUtil.sendOkHttpRequest(mainActivityAddress,new Callback(){
@@ -209,12 +210,19 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
             @Override
             public void onFailure(Call call,IOException e){
                 e.printStackTrace();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(MainActivity.this,"加载失败",Toast.LENGTH_SHORT).show();
+                    }
+                });
+
             }
         });
     }
 
     /**
-     * 展示问题
+     * 展示界面
      * @param answers
      * @param k
      */
@@ -233,12 +241,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
             answerB.setClickable(false);
             answerC.setClickable(false);
             showCorrect.setText(answerList.get(i).getCorrect());
-            counterView.setText("已提交");
+            if (isEnd){
+                counterView.setText("已结束");
+            }else {
+                counterView.setText("已提交");
+            }
+
         }else {
             timer.start();
         }
-
-
     }
 
     /**
@@ -246,10 +257,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
      * @param context
      * @param clickTitle
      */
-    public static void actionStart(Context context,String clickTitle){
-        Intent intent = new Intent(context,MainActivity.class);
-        intent.putExtra("clickTitle",clickTitle);
-        context.startActivity(intent);
+    public static void actionStart(Context context,String clickTitle,String clickState){
+            Intent intent = new Intent(context,MainActivity.class);
+            intent.putExtra("clickTitle",clickTitle);
+            intent.putExtra("clickState",clickState);
+            context.startActivity(intent);
+
     }
 
     /**
@@ -269,6 +282,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                     answerB.setClickable(false);
                     answerC.setClickable(false);
                     showCorrect.setText(answerList.get(i).getCorrect());
+                    timer.cancel();
+                    counterView.setText("已提交");
                 }
             });
             builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -321,6 +336,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                     answerB.setClickable(false);
                     answerC.setClickable(false);
                     showCorrect.setText(answerList.get(i).getCorrect());
+                    timer.cancel();
+                    counterView.setText("已提交");
 
                 }
             });

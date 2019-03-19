@@ -6,17 +6,16 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
-import com.example.answer.BaseActivity;
+
 import com.example.answer.R;
 import com.example.answer.answerQuestion.MainActivity;
-import com.example.answer.db.Question;
 import com.example.answer.util.HttpUtil;
 import com.example.answer.util.Utility;
 import java.io.IOException;
@@ -27,7 +26,7 @@ import okhttp3.Callback;
 import okhttp3.Response;
 
 
-public class QuestionListActivity extends BaseActivity{
+public class QuestionListActivity extends AppCompatActivity {
 
     public  ListView listView;
     public  QuestionListAdapter questionListAdapter;
@@ -48,12 +47,10 @@ public class QuestionListActivity extends BaseActivity{
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Question question = dataList.get(position);
-                if (question.getState().equals("正在进行")){
-                    MainActivity.actionStart(QuestionListActivity.this,question.getTitle());
+                if (question.getState().equals("正在进行")||question.getState().equals("已结束")){
+                    MainActivity.actionStart(QuestionListActivity.this,question.getTitle(),question.getState());
                 }else if (question.getState().equals("未开始")){
                     Toast.makeText(QuestionListActivity.this,"未开始",Toast.LENGTH_SHORT).show();
-                }else if (question.getState().equals("已结束")){
-                    Toast.makeText(QuestionListActivity.this,"已结束",Toast.LENGTH_SHORT).show();
                 }else {
                     Toast.makeText(QuestionListActivity.this,"发生错误",Toast.LENGTH_SHORT).show();
                 }
@@ -106,12 +103,7 @@ public class QuestionListActivity extends BaseActivity{
             @Override
             public void onFailure(Call call,IOException e){
                 e.printStackTrace();
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(QuestionListActivity.this,"获取数据失败",Toast.LENGTH_SHORT).show();
-                    }
-                });
+                Toast.makeText(QuestionListActivity.this,"加载失败",Toast.LENGTH_SHORT).show();
             }
         });
     }

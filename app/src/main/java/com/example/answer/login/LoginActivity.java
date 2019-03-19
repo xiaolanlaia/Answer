@@ -5,35 +5,28 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.answer.BaseActivity;
-import com.example.answer.answerQuestion.MainActivity;
 import com.example.answer.answerQuestionList.QuestionListActivity;
 import com.example.answer.R;
 import com.example.answer.db.User;
-import com.example.answer.util.Utility;
 
 import org.litepal.LitePal;
 import org.litepal.crud.DataSupport;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by W on 2019/2/12.
  */
 
-public class LoginActivity extends BaseActivity implements View.OnClickListener{
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
 
     private EditText accountText;
     private EditText passwordText;
@@ -58,7 +51,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
         login.setOnClickListener(this);
         logon.setOnClickListener(this);
         checkBox = (CheckBox)findViewById(R.id.check_box);
+        firstRun();
         restoreChecked();
+
 
     }
     @Override
@@ -149,6 +144,21 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
             checkBox.setChecked(true);
         }else {
             checkBox.setChecked(false);
+        }
+    }
+
+    public void firstRun() {
+        SharedPreferences sharedPreferences =  getSharedPreferences("FirstRun", 0);
+        Boolean firstRun = sharedPreferences.getBoolean("First", true);
+        if (firstRun) {
+            sharedPreferences.edit().putBoolean("First", false).apply();
+            //创建数据库;
+            LitePal.getDatabase();
+            User user = new User();
+            user.setAccount("admin");
+            user.setPassword("123456");
+            user.save();
+            Toast.makeText(getApplicationContext(),"Welcome !",Toast.LENGTH_SHORT).show();
         }
     }
 

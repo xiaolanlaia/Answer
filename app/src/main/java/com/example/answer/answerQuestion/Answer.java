@@ -1,8 +1,7 @@
-package com.example.answer.db;
+package com.example.answer.answerQuestion;
 
-import org.litepal.crud.DataSupport;
 
-public class Answer extends DataSupport {
+public class Answer{
     private String title;
     private String A;
     private String B;

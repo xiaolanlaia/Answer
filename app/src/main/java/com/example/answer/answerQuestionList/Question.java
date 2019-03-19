@@ -1,4 +1,4 @@
-package com.example.answer.db;
+package com.example.answer.answerQuestionList;
 
 
 public class Question{

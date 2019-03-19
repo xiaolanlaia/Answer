@@ -7,7 +7,7 @@
     <list>
         <mapping class="com.example.answer.db.User"/>
 
-        <mapping class="com.example.answer.db.Answer"/>
+        <mapping class="com.example.answer.answerQuestion.Answer"/>
 
     </list>
 </litapal>
