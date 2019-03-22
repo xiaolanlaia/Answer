@@ -1,4 +1,4 @@
-package com.example.answer.answerQuestionList;
+package com.example.answer.view.answerQuestionList;
 
 
 
@@ -15,9 +15,10 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.answer.R;
-import com.example.answer.answerQuestion.MainActivity;
+import com.example.answer.view.answerQuestion.MainActivity;
 import com.example.answer.util.HttpUtil;
 import com.example.answer.util.Utility;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;

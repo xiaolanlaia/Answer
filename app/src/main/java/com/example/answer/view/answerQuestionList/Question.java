@@ -1,4 +1,4 @@
-package com.example.answer.answerQuestionList;
+package com.example.answer.view.answerQuestionList;
 
 
 public class Question{

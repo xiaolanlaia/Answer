@@ -1,4 +1,4 @@
-package com.example.answer.answerQuestion;
+package com.example.answer.view.answerQuestion;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -21,7 +21,7 @@ import android.widget.Toast;
 import com.example.answer.R;
 
 
-import com.example.answer.login.LoginActivity;
+import com.example.answer.view.login.LoginActivity;
 import com.example.answer.util.HttpUtil;
 import com.example.answer.util.Utility;
 

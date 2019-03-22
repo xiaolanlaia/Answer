@@ -1,4 +1,4 @@
-package com.example.answer.answerQuestionList;
+package com.example.answer.view.answerQuestionList;
 
 import android.content.Context;
 import android.view.LayoutInflater;

@@ -1,17 +1,7 @@
 package com.example.answer.util;
 
-import android.support.annotation.MainThread;
-import android.support.annotation.NonNull;
-
-import com.example.answer.answerQuestion.MainActivity;
-
-import java.io.IOException;
-
-import okhttp3.Call;
-import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.Response;
 
 public class HttpUtil {
     public static void sendOkHttpRequest(String address,okhttp3.Callback callback){
