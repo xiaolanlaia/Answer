@@ -1,5 +1,6 @@
 package com.example.answer.view.login;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -8,12 +9,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.answer.presenter.LoginPresenter;
 import com.example.answer.view.answerQuestionList.QuestionListActivity;
 import com.example.answer.R;
+
+
 
 
 /**
@@ -30,11 +34,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public static String account;
     private LoginPresenter loginPresenter = new LoginPresenter(this);
 
-    private static LoginActivity loginActivity = null;
-
-    public static LoginActivity getLoginActivity() {
-        return loginActivity;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstance){
@@ -53,11 +52,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         restoreChecked();
 
 
-    }
-    @Override
-    protected void onResume(){
-        super.onResume();
-        checkChecked();
+
     }
     @Override
     public void onClick(View v){
@@ -67,7 +62,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 break;
             }
             case R.id.login:{
-                loginPresenter.login(LoginActivity.this);
+                loginPresenter.login();
                 break;
             }
             default:
@@ -76,20 +71,47 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
 
+    @Override
+    public Activity getContext(){
+        return this;
+    }
 
     @Override
     public void checkChecked(){
-        loginPresenter.checkChecked(LoginActivity.this);
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (checkBox.isChecked()){
+                    loginPresenter.checkChecked(true);
+
+                }else {
+                    loginPresenter.checkChecked(false);
+
+                }
+            }
+        });
     }
 
     @Override
     public void restoreChecked(){
-        loginPresenter.restoreChecked(LoginActivity.this);
+        loginPresenter.restoreChecked();
     }
-
+    @Override
+    public void doRestore(){
+        SharedPreferences sharedPreferences = getSharedPreferences("checked",0);
+        accountText.setText(sharedPreferences.getString("account",""));
+        passwordText.setText(sharedPreferences.getString("password",""));
+        accountText.setSelection(accountText.length());
+        checkBox.setChecked(true);
+    }
+    @Override
+    public void noRestore(){
+        checkBox.setChecked(false);
+    }
     @Override
     public void firstRun() {
-        loginPresenter.firstRun(LoginActivity.this);
+
+        loginPresenter.firstRun();
 
     }
     @Override
@@ -128,29 +150,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         return passwordText.getText().toString();
     }
     @Override
-    public CheckBox getCheckBox(){
-        return checkBox;
-    }
-    @Override
-    public EditText setAccount(){
-        return accountText;
-    }
-    @Override
-    public EditText setPassword(){
-        return  passwordText;
-    }
-    @Override
     public void firstRunToast(){
         Toast.makeText(this,"欢迎",Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    public void haveChecked(){
 
-    }
-    @Override
-    public void noChecked(){
-
-    }
 
 }

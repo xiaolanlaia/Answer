@@ -1,11 +1,11 @@
 package com.example.answer.presenter;
 
-import android.content.Context;
 
 import com.example.answer.model.IFirstRunListener;
 import com.example.answer.model.ILoginListener;
 import com.example.answer.model.ILoginModel;
 import com.example.answer.model.ILogonListener;
+import com.example.answer.model.IRestoreCheckListener;
 import com.example.answer.model.LoginModel;
 
 import com.example.answer.view.login.ILoginView;
@@ -21,8 +21,8 @@ public class LoginPresenter {
         this.iLoginView = iLoginView;
     }
 
-    public void login(Context context){
-        iLoginModel.login(context,iLoginView.getAccount(), iLoginView.getPassword(), new ILoginListener() {
+    public void login(){
+        iLoginModel.login(iLoginView.getContext(),iLoginView.getAccount(), iLoginView.getPassword(), new ILoginListener() {
             @Override
             public void loginSucceed() {
                 iLoginView.loginSuccess();
@@ -63,35 +63,33 @@ public class LoginPresenter {
 
     }
 
-    public void checkChecked(final Context context){
-        iLoginModel.checkChecked(context,iLoginView.getCheckBox(),iLoginView.getAccount(),iLoginView.getPassword());
+    public void checkChecked(boolean isChecked){
+        iLoginModel.checkChecked(isChecked,iLoginView.getContext(),iLoginView.getAccount(),iLoginView.getPassword());
     }
 
-    public void restoreChecked(Context context){
-        iLoginModel.restoreChecked(context,iLoginView.getAccount(),iLoginView.getCheckBox(),iLoginView.setAccount(),iLoginView.setPassword());
+    public void restoreChecked(){
+        iLoginModel.restoreChecked(iLoginView.getContext(),new IRestoreCheckListener() {
+            @Override
+            public void doRestore() {
+                iLoginView.doRestore();
+            }
+
+            @Override
+            public void noRestore() {
+
+                iLoginView.noRestore();
+            }
+        });
 
     }
 
-    public void firstRun(Context context){
-        iLoginModel.firstRun(context, new IFirstRunListener() {
+    public void firstRun(){
+        iLoginModel.firstRun(iLoginView.getContext(), new IFirstRunListener() {
             @Override
             public void firstRun() {
                 iLoginView.firstRunToast();
             }
         });
-
-//        SharedPreferences sharedPreferences =  context.getSharedPreferences("FirstRun", 0);
-//        Boolean firstRun = sharedPreferences.getBoolean("First", true);
-//        if (firstRun) {
-//            sharedPreferences.edit().putBoolean("First", false).apply();
-//            //创建数据库;
-//            LitePal.getDatabase();
-//            UserDb user = new UserDb();
-//            user.setAccount("admin");
-//            user.setPassword("123456");
-//            user.save();
-//            Toast.makeText(context,"Welcome !",Toast.LENGTH_SHORT).show();
-//        }
 
     }
 }

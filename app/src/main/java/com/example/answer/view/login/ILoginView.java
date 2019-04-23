@@ -1,5 +1,6 @@
 package com.example.answer.view.login;
 
+import android.app.Activity;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
@@ -17,12 +18,10 @@ public interface ILoginView {
     String getAccount();
     String getPassword();
 
-    CheckBox getCheckBox();
-    EditText setAccount();
-    EditText setPassword();
+    Activity getContext();
 
-    void haveChecked();
-    void noChecked();
+    void doRestore();
+    void noRestore();
 
 
     void firstRunToast();

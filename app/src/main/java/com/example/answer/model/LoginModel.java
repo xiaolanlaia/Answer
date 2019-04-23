@@ -3,9 +3,7 @@ package com.example.answer.model;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.EditText;
+
 
 import com.example.answer.db.AnswerDb;
 import com.example.answer.db.UserDb;
@@ -13,9 +11,11 @@ import com.example.answer.db.UserDb;
 import org.litepal.LitePal;
 import org.litepal.crud.DataSupport;
 import java.util.List;
-import static com.example.answer.view.answerQuestion.MainActivity.sharedPreferences;
+
 
 public class LoginModel implements ILoginModel{
+
+    SharedPreferences sharedPreferences;
 
     @Override
     public void login(Context context,final String account, final String password, final ILoginListener iLoginListener){
@@ -27,7 +27,7 @@ public class LoginModel implements ILoginModel{
             int i = 1;
             for (UserDb userDb : list){
                 if (userDb.getAccount().equals(account) && userDb.getPassword().equals(password)){
-                    sharedPreferences = context.getSharedPreferences("checked",0);
+                    SharedPreferences sharedPreferences = context.getSharedPreferences("checked",0);
                     sharedPreferences.edit().putString("account",account).apply();
                     sharedPreferences.edit().putString("password",password).apply();
                     iLoginListener.loginSucceed();
@@ -66,41 +66,35 @@ public class LoginModel implements ILoginModel{
     }
 
     @Override
-    public void checkChecked(final Context context, final CheckBox checkBox, final String account, final String password){
-        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                sharedPreferences = context.getSharedPreferences("checked",0);
-                if (checkBox.isChecked()){
-                    sharedPreferences.edit().putString("account",account).apply();
-                    sharedPreferences.edit().putString("password",password).apply();
-                    sharedPreferences.edit().putBoolean("check",true).apply();
-                }else {
-                    sharedPreferences.edit().putBoolean("check",false).apply();
-                }
-            }
-        });
+    public void checkChecked(boolean isChecked,final Context context, final String account, final String password){
+        sharedPreferences = context.getSharedPreferences("checked",0);
+        if (isChecked){
+            sharedPreferences.edit().putString("account",account).apply();
+            sharedPreferences.edit().putString("password",password).apply();
+            sharedPreferences.edit().putBoolean("check",true).apply();
+        }else {
+            sharedPreferences.edit().putBoolean("check",false).apply();
+        }
     }
 
     @Override
-    public void restoreChecked(Context context, String account, CheckBox checkBox, EditText accountText,EditText passwordText){
+    public void restoreChecked(Context context,IRestoreCheckListener iRestoreCheckListener){
         sharedPreferences = context.getSharedPreferences("checked",0);
         boolean checked = sharedPreferences.getBoolean("check",false);
         if (checked){
-            accountText.setText(sharedPreferences.getString("account",""));
-            passwordText.setText(sharedPreferences.getString("password",""));
-            accountText.setSelection(account.length());
-            checkBox.setChecked(true);
+            iRestoreCheckListener.doRestore();
+
         }else {
-            checkBox.setChecked(false);
+            iRestoreCheckListener.noRestore();
+
         }
 
     }
 
     @Override
     public void firstRun(Context context,IFirstRunListener iFirstRunListener){
-        SharedPreferences sharedPreferences =  context.getSharedPreferences("FirstRun", 0);
-        Boolean firstRun = sharedPreferences.getBoolean("First", true);
+        sharedPreferences =  context.getSharedPreferences("FirstRun", 0);
+        boolean firstRun = sharedPreferences.getBoolean("First", true);
         if (firstRun) {
             sharedPreferences.edit().putBoolean("First", false).apply();
             //创建数据库;

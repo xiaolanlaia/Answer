@@ -2,6 +2,6 @@ package com.example.answer.model;
 
 public interface IRestoreCheckListener {
 
-    void isRestoreCheck();
-    void noRestoreCheck();
+    void doRestore();
+    void noRestore();
 }
