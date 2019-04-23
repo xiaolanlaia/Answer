@@ -169,5 +169,27 @@
         android:textSize="24sp"
         android:textColor="#000"
         />
+    <TextView
+        android:id="@+id/result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="25dp"
+        android:layout_below="@+id/correct_answer"
+        android:text="答题成绩 :"
+        android:textSize="24sp"
+        android:textColor="#000"
+        />
+    <TextView
+        android:id="@+id/result_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/result"
+        android:layout_alignTop="@+id/result"
+        android:layout_marginLeft="25dp"
+        tools:text="A"
+        android:textSize="24sp"
+        android:textColor="#000"
+        />
 
 </RelativeLayout>

@@ -36,13 +36,15 @@ import okhttp3.Response;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     private String url = "http://192.168.43.120/";
-    public TextView questionText,answerA,answerB,answerC,showSelect,showCorrect,counterView;
+    public TextView questionText,answerA,answerB,answerC,showSelect,showCorrect,counterView,result_text;
     private Button preButton,neButton;
     private int i=0;
     private List<Answer> answerList = new ArrayList<>();
     public static SharedPreferences sharedPreferences;
     private Intent intent;
     private boolean isEnd;
+    private int resultCount = 0;
+
 
 
     @Override
@@ -56,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         answerA = (TextView)findViewById(R.id.answer_a);
         answerB = (TextView)findViewById(R.id.answer_b);
         answerC = (TextView)findViewById(R.id.answer_c);
+        result_text = (TextView)findViewById(R.id.result_text);
         showSelect = (TextView)findViewById(R.id.show_select);
         showCorrect = (TextView)findViewById(R.id.show_correct);
         counterView = (TextView)findViewById(R.id.counter_view);
@@ -66,12 +69,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         answerA.setOnClickListener(this);
         answerB.setOnClickListener(this);
         answerC.setOnClickListener(this);
+        intent = getIntent();
     }
 
     @Override
     protected void onResume(){
         super.onResume();
-        intent = getIntent();
+
         String mainActivityAddress = url + intent.getStringExtra("clickTitle") + ".json";
         requestAnswerList(mainActivityAddress);
         sharedPreferences =  getSharedPreferences(LoginActivity.account + intent.getStringExtra("clickTitle"), 0);
@@ -96,6 +100,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     i++;
                 }else {
                     showAnswerList(answerList,i);
+                    //前一题是否已经回答过，
                     showSelect.setText(sharedPreferences.getString(answerList.get(i).getTitle(), ""));
                 }
 
@@ -132,21 +137,35 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.answer_a:{
                 showSelect.setText("A");
                 sharedPreferences.edit().putString(answerList.get(i).getTitle(), "A").apply();
+
                 break;
             }
             case R.id.answer_b:{
                 showSelect.setText("B");
                 sharedPreferences.edit().putString(answerList.get(i).getTitle(), "B").apply();
+
                 break;
             }
             case R.id.answer_c:{
                 showSelect.setText("C");
                 sharedPreferences.edit().putString(answerList.get(i).getTitle(), "C").apply();
+
                 break;
             }
             default:
                 break;
         }
+    }
+
+
+    private void countResult(){
+        for (int k = 0;k<answerList.size();k++)
+        if (sharedPreferences.getString(answerList.get(k).getTitle(),"").equals(answerList.get(k).getCorrect())){
+            resultCount++;
+        }
+
+        sharedPreferences.edit().putInt(intent.getStringExtra("clickTitle"),resultCount).apply();
+        resultCount = 0;
     }
 
     /**
@@ -181,6 +200,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     answerB.setClickable(false);
                     answerC.setClickable(false);
                     showCorrect.setText(answerList.get(i).getCorrect());
+
                 }
             }).show();
         }
@@ -241,6 +261,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             answerB.setClickable(false);
             answerC.setClickable(false);
             showCorrect.setText(answerList.get(i).getCorrect());
+            result_text.setText("" + sharedPreferences.getInt(intent.getStringExtra("clickTitle"),0));
             if (isEnd){
                 counterView.setText("已结束");
             }else {
@@ -282,6 +303,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     answerB.setClickable(false);
                     answerC.setClickable(false);
                     showCorrect.setText(answerList.get(i).getCorrect());
+                    result_text.setText("" + sharedPreferences.getInt(intent.getStringExtra("clickTitle"),0));
                     timer.cancel();
                     counterView.setText("已提交");
                 }
@@ -336,8 +358,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     answerB.setClickable(false);
                     answerC.setClickable(false);
                     showCorrect.setText(answerList.get(i).getCorrect());
+                    countResult();
+                    result_text.setText("" + sharedPreferences.getInt(intent.getStringExtra("clickTitle"),0));
                     timer.cancel();
                     counterView.setText("已提交");
+
 
                 }
             });

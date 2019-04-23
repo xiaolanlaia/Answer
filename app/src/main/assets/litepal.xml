@@ -5,7 +5,7 @@
     <version value="1"/>
 
     <list>
-        <mapping class="com.example.answer.db.User"/>
+        <mapping class="com.example.answer.db.UserDb"/>
 
         <mapping class="com.example.answer.view.answerQuestion.Answer"/>
 

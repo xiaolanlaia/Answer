@@ -1,11 +1,7 @@
 package com.example.answer.presenter;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.widget.CompoundButton;
-import android.widget.Toast;
 
-import com.example.answer.db.User;
 import com.example.answer.model.IFirstRunListener;
 import com.example.answer.model.ILoginListener;
 import com.example.answer.model.ILoginModel;
@@ -13,11 +9,6 @@ import com.example.answer.model.ILogonListener;
 import com.example.answer.model.LoginModel;
 
 import com.example.answer.view.login.ILoginView;
-import com.example.answer.view.login.LoginActivity;
-
-import org.litepal.LitePal;
-
-import static com.example.answer.view.answerQuestion.MainActivity.sharedPreferences;
 
 
 public class LoginPresenter {
@@ -95,7 +86,7 @@ public class LoginPresenter {
 //            sharedPreferences.edit().putBoolean("First", false).apply();
 //            //创建数据库;
 //            LitePal.getDatabase();
-//            User user = new User();
+//            UserDb user = new UserDb();
 //            user.setAccount("admin");
 //            user.setPassword("123456");
 //            user.save();

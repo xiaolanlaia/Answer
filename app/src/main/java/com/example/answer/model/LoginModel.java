@@ -7,7 +7,8 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 
-import com.example.answer.db.User;
+import com.example.answer.db.AnswerDb;
+import com.example.answer.db.UserDb;
 
 import org.litepal.LitePal;
 import org.litepal.crud.DataSupport;
@@ -22,10 +23,10 @@ public class LoginModel implements ILoginModel{
         if (TextUtils.isEmpty(account)||TextUtils.isEmpty(password)){
             iLoginListener.loginEmpty();
         }else {
-            List<User> list= DataSupport.findAll(User.class);
+            List<UserDb> list= DataSupport.findAll(UserDb.class);
             int i = 1;
-            for (User user : list){
-                if (user.getAccount().equals(account) && user.getPassword().equals(password)){
+            for (UserDb userDb : list){
+                if (userDb.getAccount().equals(account) && userDb.getPassword().equals(password)){
                     sharedPreferences = context.getSharedPreferences("checked",0);
                     sharedPreferences.edit().putString("account",account).apply();
                     sharedPreferences.edit().putString("password",password).apply();
@@ -45,17 +46,17 @@ public class LoginModel implements ILoginModel{
         if (TextUtils.isEmpty(account)||TextUtils.isEmpty(password)){
             iLogonListener.logonEmpty();
         }else {
-            List<User> list1= DataSupport.findAll(User.class);
+            List<UserDb> list1= DataSupport.findAll(UserDb.class);
             int i = 1;
-            for (User user : list1){
-                if (account.equals(user.getAccount())){
+            for (UserDb userDb : list1){
+                if (account.equals(userDb.getAccount())){
                     iLogonListener.logonFailed();
                     break;
                 }else if (i >= list1.size()){
-                    User user1 = new User();
-                    user1.setAccount(account);
-                    user1.setPassword(password);
-                    user1.save();
+                    UserDb userDb1 = new UserDb();
+                    userDb1.setAccount(account);
+                    userDb1.setPassword(password);
+                    userDb1.save();
                     iLogonListener.logonSucceed();
                     break;
                 }
@@ -104,10 +105,15 @@ public class LoginModel implements ILoginModel{
             sharedPreferences.edit().putBoolean("First", false).apply();
             //创建数据库;
             LitePal.getDatabase();
-            User user = new User();
-            user.setAccount("admin");
-            user.setPassword("123456");
-            user.save();
+            UserDb userDb = new UserDb();
+            userDb.setAccount("admin");
+            userDb.setPassword("123456");
+            userDb.save();
+            AnswerDb answerDb = new AnswerDb();
+            answerDb.setAnswerA("K");
+            answerDb.setAnswerB("K");
+            answerDb.setAnswerC("K");
+            answerDb.save();
             iFirstRunListener.firstRun();
         }
     }

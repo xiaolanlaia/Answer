@@ -5,21 +5,15 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.answer.db.User;
 import com.example.answer.presenter.LoginPresenter;
 import com.example.answer.view.answerQuestionList.QuestionListActivity;
 import com.example.answer.R;
-
-
-import org.litepal.LitePal;
 
 
 /**
@@ -34,8 +28,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private Button logon;
     private CheckBox checkBox;
     public static String account;
-    private SharedPreferences sharedPreferences;
     private LoginPresenter loginPresenter = new LoginPresenter(this);
+
+    private static LoginActivity loginActivity = null;
+
+    public static LoginActivity getLoginActivity() {
+        return loginActivity;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstance){
@@ -86,16 +85,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void restoreChecked(){
         loginPresenter.restoreChecked(LoginActivity.this);
-//        sharedPreferences = getSharedPreferences("checked",0);
-//        checked = sharedPreferences.getBoolean("check",false);
-//        if (checked){
-//            accountText.setText(sharedPreferences.getString("account",""));
-//            passwordText.setText(sharedPreferences.getString("password",""));
-//            accountText.setSelection(accountText.getText().length());
-//            checkBox.setChecked(true);
-//        }else {
-//            checkBox.setChecked(false);
-//        }
     }
 
     @Override
@@ -153,6 +142,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void firstRunToast(){
         Toast.makeText(this,"欢迎",Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void haveChecked(){
+
+    }
+    @Override
+    public void noChecked(){
+
     }
 
 }

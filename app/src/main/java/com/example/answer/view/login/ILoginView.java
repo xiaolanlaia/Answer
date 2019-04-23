@@ -16,9 +16,15 @@ public interface ILoginView {
     void firstRun();
     String getAccount();
     String getPassword();
+
     CheckBox getCheckBox();
     EditText setAccount();
     EditText setPassword();
+
+    void haveChecked();
+    void noChecked();
+
+
     void firstRunToast();
 
 
