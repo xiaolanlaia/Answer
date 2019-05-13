@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <litapal>
-    <dbname value="userDb"/>
+    <dbname value="userBean"/>
 
     <version value="1"/>
 
     <list>
-        <mapping class="com.example.answer.db.UserDb"/>
+        <mapping class="com.example.answer.bean.UserBean"/>
 
-        <mapping class="com.example.answer.view.answerQuestion.Answer"/>
+        <mapping class="com.example.answer.createRandomExam.AnswerBean"/>
 
     </list>
 </litapal>

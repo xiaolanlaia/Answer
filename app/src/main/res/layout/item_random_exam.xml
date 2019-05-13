@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center">
+
+    <TextView
+        android:id="@+id/random_exam_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textSize="20sp"
+        android:textColor="#000"
+        android:gravity="left"
+        android:layout_marginLeft="5dp"
+        tools:text="题目编号"
+        />
+
+    <TextView
+        android:id="@+id/submit_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textSize="18sp"
+        android:textColor="#cce0"
+        android:gravity="left"
+        android:layout_marginLeft="5dp"
+        tools:text="未提交"
+        />
+    <TextView
+        android:id="@+id/mark"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textSize="18sp"
+        android:textColor="#cce0"
+        android:gravity="left"
+        android:layout_marginLeft="5dp"
+        tools:text="分数"
+        />
+</LinearLayout>
