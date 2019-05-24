@@ -19,6 +19,7 @@ public class LoadingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_loading);
         sharedPreferences = getSharedPreferences("CheckLogin",0);
     }
+
     @Override
     protected void onResume(){
         super.onResume();

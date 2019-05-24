@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
@@ -12,6 +11,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.answer.util.BaseActivity;
 import com.example.answer.exam.ExamActivity;
 import com.example.answer.login.presenter.LoginPresenter;
 import com.example.answer.R;
@@ -21,13 +21,14 @@ import com.example.answer.R;
  * Created by W on 2019/2/12.
  */
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener,ILoginView{
+public class LoginActivity extends BaseActivity implements View.OnClickListener,ILoginView{
 
     private EditText accountText;
     private EditText passwordText;
     private Button login_btn;
     private CheckBox checkBox;
     private LoginPresenter loginPresenter = new LoginPresenter(this);
+    private SharedPreferences sharedPreferences;
 
 
 
@@ -35,6 +36,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstance){
         super.onCreate(savedInstance);
         setContentView(R.layout.activity_login);
+        sharedPreferences = getSharedPreferences("CheckLogin",0);
+        sharedPreferences.edit().putBoolean("haveLogin",false).apply();
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         accountText = (EditText)findViewById(R.id.account_text);

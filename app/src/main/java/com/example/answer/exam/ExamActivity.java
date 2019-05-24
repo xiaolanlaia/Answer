@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.answer.util.BaseActivity;
 import com.example.answer.R;
 
 import com.example.answer.myAccount.ManagerAccountActivity;
@@ -34,7 +34,7 @@ import okhttp3.Callback;
 import okhttp3.Response;
 
 
-public class ExamActivity extends AppCompatActivity {
+public class ExamActivity extends BaseActivity {
 
     public  ListView listView;
     public ExamAdapter examAdapter;
@@ -46,6 +46,7 @@ public class ExamActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exam);
+        addActivity(this);
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -86,6 +87,11 @@ public class ExamActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        removeActivity(this);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
