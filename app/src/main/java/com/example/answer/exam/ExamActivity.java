@@ -15,12 +15,12 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.example.answer.util.BaseActivity;
 import com.example.answer.R;
 
 import com.example.answer.myAccount.ManagerAccountActivity;
 import com.example.answer.randomExam.RandomExamActivity;
 
+import com.example.answer.util.BaseActivity;
 import com.example.answer.util.HttpUtil;
 import com.example.answer.util.JsonUtility;
 

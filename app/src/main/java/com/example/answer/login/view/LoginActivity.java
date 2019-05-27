@@ -11,8 +11,8 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.answer.util.BaseActivity;
 import com.example.answer.exam.ExamActivity;
+import com.example.answer.login.base.BaseActivity;
 import com.example.answer.login.presenter.LoginPresenter;
 import com.example.answer.R;
 
@@ -21,16 +21,20 @@ import com.example.answer.R;
  * Created by W on 2019/2/12.
  */
 
-public class LoginActivity extends BaseActivity implements View.OnClickListener,ILoginView{
+public class LoginActivity extends BaseActivity<ILoginView,LoginPresenter> implements View.OnClickListener{
 
     private EditText accountText;
     private EditText passwordText;
     private Button login_btn;
     private CheckBox checkBox;
-    private LoginPresenter loginPresenter = new LoginPresenter(this);
+
     private SharedPreferences sharedPreferences;
 
 
+    @Override
+    protected LoginPresenter createPresenter(){
+        return new LoginPresenter();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstance){
@@ -55,7 +59,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     public void onClick(View v){
         switch (v.getId()){
             case R.id.login:{
-                loginPresenter.login();
+                getPresenter().login();
                 break;
             }
             default:
@@ -71,15 +75,15 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
     public void checkChecked(){
         if (checkBox.isChecked()){
-            loginPresenter.checkChecked(true);
+            getPresenter().checkChecked(true);
         }else {
-            loginPresenter.checkChecked(false);
+            getPresenter().checkChecked(false);
         }
     }
 
     @Override
     public void restoreChecked(){
-        loginPresenter.restoreChecked();
+        getPresenter().restoreChecked();
     }
     @Override
     public void doRestore(){
@@ -96,7 +100,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     @Override
     public void firstRun() {
 
-        loginPresenter.firstRun();
+        getPresenter().firstRun();
 
     }
     @Override

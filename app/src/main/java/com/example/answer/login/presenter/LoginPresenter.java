@@ -1,76 +1,76 @@
 package com.example.answer.login.presenter;
 
 
+import com.example.answer.login.base.BasePresenter;
 import com.example.answer.login.model.IFirstRunListener;
 import com.example.answer.login.model.ILoginListener;
 import com.example.answer.login.model.ILoginModel;
 import com.example.answer.login.model.IRestoreCheckListener;
 import com.example.answer.login.model.LoginModel;
-
 import com.example.answer.login.view.ILoginView;
 
 
-public class LoginPresenter {
+public class LoginPresenter extends BasePresenter<ILoginView> {
 
-    private ILoginView iLoginView;
+
     private ILoginModel iLoginModel;
 
-    public LoginPresenter(ILoginView iLoginView){
+    public LoginPresenter(){
         this.iLoginModel = new LoginModel();
-        this.iLoginView = iLoginView;
+
     }
 
     public void login(){
-        iLoginModel.login(iLoginView.getContext(),iLoginView.getAccount(), iLoginView.getPassword(), new ILoginListener() {
+        iLoginModel.login(getView().getContext(),getView().getAccount(), getView().getPassword(), new ILoginListener() {
             @Override
             public void loginSucceed() {
-                iLoginView.loginSuccess();
+                getView().loginSuccess();
             }
 
             @Override
             public void loginFailed() {
 
-                iLoginView.loginFailed();
+                getView().loginFailed();
             }
 
             @Override
             public void loginEmpty() {
-                iLoginView.loginEmpty();
+                getView().loginEmpty();
 
             }
             @Override
             public void networkFailed(){
-                iLoginView.networkFailed();
+                getView().networkFailed();
             }
         });
     }
 
 
     public void checkChecked(boolean isChecked){
-        iLoginModel.checkChecked(isChecked,iLoginView.getContext(),iLoginView.getAccount(),iLoginView.getPassword());
+        iLoginModel.checkChecked(isChecked,getView().getContext(),getView().getAccount(),getView().getPassword());
     }
 
     public void restoreChecked(){
-        iLoginModel.restoreChecked(iLoginView.getContext(),new IRestoreCheckListener() {
+        iLoginModel.restoreChecked(getView().getContext(),new IRestoreCheckListener() {
             @Override
             public void doRestore() {
-                iLoginView.doRestore();
+                getView().doRestore();
             }
 
             @Override
             public void noRestore() {
 
-                iLoginView.noRestore();
+                getView().noRestore();
             }
         });
 
     }
 
     public void firstRun(){
-        iLoginModel.firstRun(iLoginView.getContext(), new IFirstRunListener() {
+        iLoginModel.firstRun(getView().getContext(), new IFirstRunListener() {
             @Override
             public void firstRun() {
-                iLoginView.firstRunToast();
+                getView().firstRunToast();
             }
         });
 

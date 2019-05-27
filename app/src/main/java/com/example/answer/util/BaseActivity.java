@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BaseActivity extends AppCompatActivity {
+public class BaseActivity  extends AppCompatActivity {
     public static List<Activity> activities = new ArrayList<Activity>();
     //添加活动
     public static void addActivity(Activity activity){
@@ -24,5 +24,4 @@ public class BaseActivity extends AppCompatActivity {
             }
         }
     }
-
 }

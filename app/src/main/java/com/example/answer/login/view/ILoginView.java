@@ -2,7 +2,9 @@ package com.example.answer.login.view;
 
 import android.app.Activity;
 
-public interface ILoginView {
+import com.example.answer.login.base.IBaseView;
+
+public interface ILoginView extends IBaseView {
 
     void loginFailed();
     void loginSuccess();
